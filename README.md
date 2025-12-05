@@ -2,8 +2,9 @@
 Product Manager Assignment – README
 
 >This project presents a redesigned Homepage Dashboard for Xeno — the first screen a retail marketer sees after logging into the platform.
-The homepage is designed with two primary goals:
-    1    Immediate clarity – Understand “what’s happening right now” across campaigns, customers, segments, and journeys.
+
+The homepage is designed with two primary goals: <br>
+    1    Immediate clarity – Understand “what’s happening right now” across campaigns, customers, segments, and journeys. <br>
     2    Faster action – Enable marketers to perform their most common actions with minimal clicks.
 
 ### Objectives

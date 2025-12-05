@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Xeno – Marketer Homepage Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #f4f5f7;
+      --bg-card: #ffffff;
+      --border-subtle: #e1e4ea;
+      --primary: #2563eb;
+      --primary-soft: #e3edff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --accent: #16a34a;
+      --danger: #dc2626;
+      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+      --radius-lg: 14px;
+      --radius-xl: 18px;
+      --transition-fast: 0.18s ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top left, #e8f0ff, #f8fafc 55%);
+      color: var(--text-main);
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      height: 64px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e5e7eb;
+      backdrop-filter: blur(16px);
+      background: rgba(248, 250, 252, 0.9);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: conic-gradient(
+        from 180deg,
+        #2563eb,
+        #4f46e5,
+        #22c55e,
+        #2563eb
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 18px;
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+    }
+
+    .brand-text-main {
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-text-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .env-pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #e5f3ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .user-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+    }
+
+    .user-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ecfdf3;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .user-role {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Main layout */
+    .main {
+      flex: 1;
+      padding: 20px 24px 32px;
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 18px;
+      gap: 16px;
+    }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .page-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .time-filter {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .time-filter select {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      font-size: 12px;
+    }
+
+    /* KPI Row */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 12px 14px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: transform var(--transition-fast),
+        box-shadow var(--transition-fast), border-color var(--transition-fast);
+      cursor: default;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-soft);
+      border-color: #cbd5f5;
+    }
+
+    .kpi-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+    }
+
+    .kpi-chip {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .kpi-value {
+      font-size: 20px;
+      font-weight: 600;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .kpi-unit {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .kpi-trend {
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .trend-up {
+      color: var(--accent);
+    }
+
+    .trend-down {
+      color: var(--danger);
+    }
+
+    .trend-dot {
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    /* Grid layout body */
+    .grid-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.65fr) minmax(280px, 0.95fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+      padding: 14px 16px 12px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .card-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #f3f4ff;
+      color: #4f46e5;
+      border: 1px solid #e0e7ff;
+    }
+
+    /* Quick Actions */
+    .quick-actions-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .qa-btn {
+      border-radius: 999px;
+      border: 1px dashed #d1d5db;
+      padding: 8px 10px;
+      font-size: 12px;
+      background: #f9fafb;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background var(--transition-fast),
+        border-color var(--transition-fast), transform var(--transition-fast),
+        box-shadow var(--transition-fast);
+    }
+
+    .qa-btn span.icon {
+      font-size: 13px;
+    }
+
+    .qa-btn.primary {
+      background: var(--primary);
+      color: #eff6ff;
+      border-style: solid;
+      border-color: #1d4ed8;
+      box-shadow: 0 10px 18px rgba(37, 99, 235, 0.25);
+    }
+
+    .qa-btn:hover {
+      background: #eef2ff;
+      border-color: #c7d2fe;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(148, 163, 184, 0.4);
+    }
+
+    .qa-btn.primary:hover {
+      background: #1d4ed8;
+    }
+
+    /* Recent Campaigns table */
+    .table-wrapper {
+      margin-top: 8px;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    thead {
+      background: #f9fafb;
+    }
+
+    th,
+    td {
+      padding: 8px 10px;
+      text-align: left;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    th {
+      font-size: 11px;
+      font-weight: 500;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    .status-pill {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .status-live {
+      background: #ecfdf5;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    .status-scheduled {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .status-paused {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fcd34d;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+
+    /* Alerts / Recommendations */
+    .list {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .list-item {
+      border-radius: 10px;
+      padding: 8px 9px;
+      border: 1px dashed #e5e7eb;
+      background: #f9fafb;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 12px;
+    }
+
+    .list-item.alert {
+      border-style: solid;
+      border-color: #fee2e2;
+      background: #fef2f2;
+    }
+
+    .list-item .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #9ca3af;
+    }
+
+    .list-item .primary-text {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .list-item .meta {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .pill-inline {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #e5f3ff;
+      color: #1d4ed8;
+      margin-left: 4px;
+    }
+
+    /* Bottom row – Segments & Journeys */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .metric-label {
+      color: var(--text-muted);
+    }
+
+    .metric-value {
+      font-weight: 500;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+    }
+
+    .chip.highlight {
+      background: #ecfdf3;
+      border-color: #bbf7d0;
+      color: #15803d;
+    }
+
+    .link-inline {
+      font-size: 11px;
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    .link-inline:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .kpi-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .grid-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .bottom-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .top-nav {
+        padding: 0 14px;
+      }
+      .main {
+        padding: 16px 14px 24px;
+      }
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .kpi-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .card {
+        padding: 12px 12px 10px;
+      }
+      th,
+      td {
+        padding: 7px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Top Navigation -->
+    <header class="top-nav">
+      <div class="brand">
+        <div class="brand-logo">X</div>
+        <div>
+          <div class="brand-text-main">Xeno</div>
+          <div class="brand-text-sub">Retail Marketing OS</div>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <div class="env-pill">ACME FASHION · PRODUCTION</div>
+        <div class="user-chip">
+          <div class="user-avatar">MA</div>
+          <div>
+            <div class="user-name">Marketing Admin</div>
+            <div class="user-role">CRM Manager</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Page header -->
+      <div class="page-header">
+        <div>
+          <div class="page-title">Today at a glance</div>
+          <div class="page-subtitle">
+            Overview of your campaigns, customers & journeys across all channels.
+          </div>
+        </div>
+        <div class="time-filter">
+          <span>Time range</span>
+          <select>
+            <option>Today</option>
+            <option>Last 7 days</option>
+            <option>Last 30 days</option>
+            <option>This month</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- KPI Row -->
+      <section class="kpi-row">
+        <article class="kpi-card">
+          <div class="kpi-label">
+            <span>Revenue Influenced</span>
+            <span class="kpi-chip">vs. last 7 days</span>
+          </div>
+          <div class="kpi-value">
+            ₹18.4L
+            <span class="kpi-unit">from Xeno campaigns</span>
+          </div>
+          <div class="kpi-trend trend-up">
+            <span class="trend-dot">▲</span>
+            +14.2% · Strong uplift
+          </div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-label">
+            <span>Campaign CTR</span>
+            <span class="kpi-chip">All channels</span>
+          </div>
+          <div class="kpi-value">
+            7.8%
+            <span class="kpi-unit">avg click-through</span>
+          </div>
+          <div class="kpi-trend trend-up">
+            <span class="trend-dot">▲</span>
+            +1.3 pts vs. last week
+          </div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-label">
+            <span>New Customers</span>
+            <span class="kpi-chip">Captured in CRM</span>
+          </div>
+          <div class="kpi-value">
+            1,246
+            <span class="kpi-unit">profiles added</span>
+          </div>
+          <div class="kpi-trend trend-up">
+            <span class="trend-dot">▲</span>
+            +9.5% from usual
+          </div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-label">
+            <span>Repeat Purchase Rate</span>
+            <span class="kpi-chip">Loyalty cohorts</span>
+          </div>
+          <div class="kpi-value">
+            32%
+            <span class="kpi-unit">last 30 days</span>
+          </div>
+          <div class="kpi-trend trend-down">
+            <span class="trend-dot">▼</span>
+            −2.1 pts · Needs attention
+          </div>
+        </article>
+      </section>
+
+      <!-- Middle grid -->
+      <section class="grid-layout">
+        <!-- Left column -->
+        <div class="left-column">
+          <!-- Quick Actions -->
+          <section class="card">
+            <header class="card-header">
+              <div>
+                <div class="card-title">Quick actions</div>
+                <div class="card-subtitle">
+                  Start with the most common workflows your team runs.
+                </div>
+              </div>
+              <span class="card-badge">Recommended</span>
+            </header>
+
+            <div class="quick-actions-list">
+              <button class="qa-btn primary">
+                <span class="icon">➕</span>
+                <span>Create new campaign</span>
+              </button>
+              <button class="qa-btn">
+                <span class="icon">🎯</span>
+                <span>Build customer segment</span>
+              </button>
+              <button class="qa-btn">
+                <span class="icon">💬</span>
+                <span>Send WhatsApp broadcast</span>
+              </button>
+              <button class="qa-btn">
+                <span class="icon">🔁</span>
+                <span>Create automated journey</span>
+              </button>
+              <button class="qa-btn">
+                <span class="icon">📥</span>
+                <span>Import customer data</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- Recent Campaigns -->
+          <section class="card" style="margin-top: 14px;">
+            <header class="card-header">
+              <div>
+                <div class="card-title">Recent campaigns</div>
+                <div class="card-subtitle">
+                  Performance across WhatsApp, SMS, Email & Push.
+                </div>
+              </div>
+              <a href="#" class="link-inline">View all &rsaquo;</a>
+            </header>
+
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Campaign</th>
+                    <th>Channel</th>
+                    <th>Status</th>
+                    <th>Sent</th>
+                    <th>CTR</th>
+                    <th>Revenue</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Winter Drop Preview</td>
+                    <td>WhatsApp</td>
+                    <td>
+                      <span class="status-pill status-live">
+                        <span class="dot"></span> Live
+                      </span>
+                    </td>
+                    <td>48,210</td>
+                    <td>12.4%</td>
+                    <td>₹6.3L</td>
+                  </tr>
+                  <tr>
+                    <td>Weekend Flash Sale</td>
+                    <td>SMS + Email</td>
+                    <td>
+                      <span class="status-pill status-scheduled">
+                        <span class="dot"></span> Starts in 3 hrs
+                      </span>
+                    </td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>Projected ₹4.1L</td>
+                  </tr>
+                  <tr>
+                    <td>Loyalty Gold Upsell</td>
+                    <td>Email</td>
+                    <td>
+                      <span class="status-pill status-paused">
+                        <span class="dot"></span> Paused
+                      </span>
+                    </td>
+                    <td>12,034</td>
+                    <td>6.1%</td>
+                    <td>₹1.1L</td>
+                  </tr>
+                  <tr>
+                    <td>Welcome Series Step 1</td>
+                    <td>Journey</td>
+                    <td>
+                      <span class="status-pill status-live">
+                        <span class="dot"></span> Always on
+                      </span>
+                    </td>
+                    <td>2,480 today</td>
+                    <td>9.8%</td>
+                    <td>₹73K</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <!-- Right column -->
+        <aside class="right-column">
+          <!-- Alerts -->
+          <section class="card">
+            <header class="card-header">
+              <div>
+                <div class="card-title">Alerts & health</div>
+                <div class="card-subtitle">
+                  Issues that may impact performance today.
+                </div>
+              </div>
+            </header>
+
+            <div class="list">
+              <div class="list-item alert">
+                <span class="label">Deliverability</span>
+                <span class="primary-text">
+                  SMS bounce rate is elevated on
+                  <strong>Weekend Flash Sale</strong>.
+                </span>
+                <span class="meta">
+                  7.4% bounces (usual: 2.1%).
+                  <a href="#" class="link-inline">Check sender ID</a>
+                </span>
+              </div>
+
+              <div class="list-item">
+                <span class="label">Journey health</span>
+                <span class="primary-text">
+                  1 step failing in <strong>Welcome Series</strong>.
+                </span>
+                <span class="meta">
+                  API timeout on product feed.
+                  <a href="#" class="link-inline">View journey &rsaquo;</a>
+                </span>
+              </div>
+
+              <div class="list-item">
+                <span class="label">Channel usage</span>
+                <span class="primary-text">
+                  WhatsApp budget at <strong>82% of limit</strong>.
+                </span>
+                <span class="meta">
+                  Top spender:
+                  <span class="pill-inline">Winter Drop Preview</span>
+                </span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Recommendations -->
+          <section class="card" style="margin-top: 14px;">
+            <header class="card-header">
+              <div>
+                <div class="card-title">Recommended next actions</div>
+                <div class="card-subtitle">
+                  AI suggestions based on current customer behavior.
+                </div>
+              </div>
+            </header>
+
+            <div class="list">
+              <div class="list-item">
+                <span class="label">Win-back</span>
+                <span class="primary-text">
+                  8,120 customers are at risk of lapsing this week.
+                </span>
+                <span class="meta">
+                  Create a journey with a 2-step win-back flow.
+                  <a href="#" class="link-inline">Start from template</a>
+                </span>
+              </div>
+
+              <div class="list-item">
+                <span class="label">High value</span>
+                <span class="primary-text">
+                  Your top 3% customers have not been targeted in 10 days.
+                </span>
+                <span class="meta">
+                  Trigger an exclusive early-access WhatsApp campaign.
+                </span>
+              </div>
+
+              <div class="list-item">
+                <span class="label">Segmentation</span>
+                <span class="primary-text">
+                  New “Sportswear Intenders” segment detected.
+                </span>
+                <span class="meta">
+                  4,320 customers · 1.7x higher AOV.
+                  <a href="#" class="link-inline">View segment</a>
+                </span>
+              </div>
+            </div>
+          </section>
+        </aside>
+      </section>
+
+      <!-- Bottom grid: segments & journeys -->
+      <section class="bottom-grid">
+        <section class="card">
+          <header class="card-header">
+            <div>
+              <div class="card-title">Customer segments</div>
+              <div class="card-subtitle">
+                How your key segments are growing and performing.
+              </div>
+            </div>
+            <a href="#" class="link-inline">Manage segments</a>
+          </header>
+
+          <div class="metric-row">
+            <span class="metric-label">Total active segments</span>
+            <span class="metric-value">32</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">Customers in loyalty program</span>
+            <span class="metric-value">96.4K</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">At-risk customers (last 60 days)</span>
+            <span class="metric-value">18.2K</span>
+          </div>
+
+          <div class="chips">
+            <span class="chip highlight">High-value · 3.4x AOV</span>
+            <span class="chip">New joiners · 7 days</span>
+            <span class="chip">COD only shoppers</span>
+            <span class="chip">Dormant · 180 days+</span>
+          </div>
+        </section>
+
+        <section class="card">
+          <header class="card-header">
+            <div>
+              <div class="card-title">Automated journeys</div>
+              <div class="card-subtitle">
+                Always-on flows running across the lifecycle.
+              </div>
+            </div>
+            <a href="#" class="link-inline">View all journeys</a>
+          </header>
+
+          <div class="metric-row">
+            <span class="metric-label">Active journeys</span>
+            <span class="metric-value">7</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">Avg. journey conversion</span>
+            <span class="metric-value">5.9%</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">Revenue from journeys (30d)</span>
+            <span class="metric-value">₹9.8L</span>
+          </div>
+
+          <div class="chips">
+            <span class="chip highlight">Welcome Series · On</span>
+            <span class="chip">Abandoned Cart · On</span>
+            <span class="chip">Loyalty Tier Upgrade · On</span>
+            <span class="chip">COD to Prepaid Nudges · Testing</span>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

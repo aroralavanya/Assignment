@@ -7,10 +7,11 @@ The homepage is designed with two primary goals:
     2    Faster action – Enable marketers to perform their most common actions with minimal clicks.
 
 ### Objectives
+
 The redesigned homepage aims to:
-    •    Provide a real-time view of campaign and account performance
-    •    Surface alerts and issues that require immediate attention
-    •    Highlight AI-driven recommendations to guide marketers
-    •    Offer high-impact quick actions to reduce workflow friction
-    •    Showcase segments and automated journeys to drive user adoption
-    •    Create a dashboard that is both insightful and actionable
+* Provide a real-time view of campaign and account performance
+* Surface alerts and issues that require immediate attention
+* Highlight AI-driven recommendations to guide marketers
+* Offer high-impact quick actions to reduce workflow friction
+* Showcase segments and automated journeys to drive user adoption
+* Create a dashboard that is both insightful and actionable
